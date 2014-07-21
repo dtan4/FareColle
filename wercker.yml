@@ -23,11 +23,11 @@ build:
         name: inspect build result
         code: |
           pwd
-          ls -la ./$WERCKER_GIT_REPOSITORY/build/outputs/apk
-          cp ./$WERCKER_GIT_REPOSITORY/build/outputs/apk/*.apk $WERCKER_REPORT_ARTIFACTS_DIR
+          ls -la ./app/build/outputs/apk
+          cp ./app/build/outputs/apk/*.apk $WERCKER_REPORT_ARTIFACTS_DIR
 deploy:
   steps:
     - script:
         name: upload to deploygate
         code: |
-          curl -F file=@$WERCKER_GIT_REPOSITORY/build/outputs/apk/app-release.apk -F token="$DEPLOYGATE_API_KEY" https://deploygate.com/api/users/dtan4/apps
+          curl -F file=@app/build/outputs/apk/app-release.apk -F token="$DEPLOYGATE_API_KEY" https://deploygate.com/api/users/dtan4/apps
