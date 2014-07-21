@@ -3,6 +3,8 @@ package org.dtan4.farecolle;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.util.Log;
@@ -62,6 +64,32 @@ public class MainActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        if (nfcAdapter == null) {
+            return;
+        }
+
+        nfcAdapter.disableForegroundDispatch(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (nfcAdapter == null) {
+            return;
+        }
+
+        Intent intent = new Intent(this, this.getClass())
+                .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                getApplicationContext(), 0, intent, 0);
+        nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
     }
 
     /**
