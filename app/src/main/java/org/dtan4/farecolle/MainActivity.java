@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
     private NfcAdapter nfcAdapter;
-    private String TAG = "farecolle_main";
+    private static final String TAG = "farecolle.main";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
