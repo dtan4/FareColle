@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -64,7 +66,9 @@ public class MainActivity extends Activity {
                 || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
             byte[] idm = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
             String idStr = toHex(idm);
-            Toast.makeText(getApplicationContext(), idStr, Toast.LENGTH_SHORT).show();
+
+            TextView tv = (TextView)findViewById(R.id.cardIdView);
+            tv.setText(idStr);
         }
     }
 
