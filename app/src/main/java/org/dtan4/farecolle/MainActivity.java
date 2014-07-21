@@ -55,6 +55,20 @@ public class MainActivity extends Activity {
     }
 
     @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        String action = intent.getAction();
+
+        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
+                || NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
+                || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
+            byte[] idm = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
+            String idStr = toHex(idm);
+            Toast.makeText(getApplicationContext(), idStr, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -90,6 +104,20 @@ public class MainActivity extends Activity {
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 getApplicationContext(), 0, intent, 0);
         nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
+    }
+
+    private String toHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder(bytes.length * 2);
+
+        for (byte b : bytes) {
+            String hex = Integer.toHexString(b & 0xff);
+            if (hex.length() == 1) {
+                sb.append("0");
+            }
+            sb.append(hex);
+        }
+
+        return sb.toString();
     }
 
     /**
