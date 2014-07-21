@@ -17,3 +17,17 @@ build:
         name: run gradle
         code: |
           gradle --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR build
+  after-steps:
+    # Use the build results
+    - script:
+        name: inspect build result
+        code: |
+          pwd
+          ls -la ./$WERCKER_GIT_REPOSITORY/build/outputs/apk
+          cp ./$WERCKER_GIT_REPOSITORY/build/outputs/apk/*.apk $WERCKER_REPORT_ARTIFACTS_DIR
+deploy:
+  steps:
+    - script:
+        name: upload to deploygate
+        code: |
+          curl -F file=@$WERCKER_GIT_REPOSITORY/build/outputs/apk/app-release.apk -F token="$DEPLOYGATE_API_KEY" https://deploygate.com/api/users/dtan4/apps
