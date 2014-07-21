@@ -3,17 +3,21 @@ package org.dtan4.farecolle;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
-
+import android.widget.Toast;
 
 
 public class MainActivity extends Activity {
+    private NfcAdapter nfcAdapter;
+    private String TAG = "farecolle_main";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +27,20 @@ public class MainActivity extends Activity {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
+        }
+
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+        if (nfcAdapter != null) {
+            if (!nfcAdapter.isEnabled()) {
+                Toast.makeText(getApplicationContext(), getString(R.string.nfc_disabled),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Log.d(TAG, getString(R.string.nfc_enabled));
+            }
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.nfc_unsupported),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
