@@ -3,14 +3,14 @@ package org.dtan4.farecolle.util;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 
 public class History {
     private static final String TAG = "farecolle.util.History";
 
     private int deviceType;
     private int processType;
-    private Date postedAt;
+    private Calendar postedAt;
     private int balance;
     private int region;
 
@@ -35,11 +35,26 @@ public class History {
     private void readFromBytes(byte[] historyBytes, int offset) {
         this.deviceType = historyBytes[offset + 0] & 0xff;
         this.processType = historyBytes[offset + 1] & 0xff;
+        this.postedAt = readPostedAt(historyBytes, offset);
 
         // little-endian
         this.balance = multipleBytesToInt(historyBytes, offset + 11, offset + 10);
 
         this.region = historyBytes[offset + 15];
+    }
+
+    private Calendar readPostedAt(byte[] historyBytes, int offset) {
+        int dateInt;
+        int year, month, day;
+        Calendar c = Calendar.getInstance();
+
+        dateInt = multipleBytesToInt(historyBytes, offset + 4, offset + 5);
+        year = (dateInt >> 9) & 0x7f + 2000; // Suica is available from 2001
+        month = (dateInt >> 5) & 0x0f;
+        day = dateInt & 0x1f;
+        c.set(year, month - 1, day);
+
+        return c;
     }
 
     private int multipleBytesToInt(byte[] historyBytes, int from, int to) {
@@ -56,7 +71,6 @@ public class History {
                 result += (historyBytes[i] & 0xff);
             }
         }
-        Log.d(TAG, Integer.toString(result));
 
         return result;
     }
@@ -64,6 +78,13 @@ public class History {
     public String toString() {
         return "deviceType: " + Integer.toString(deviceType) + ", " +
                 "processType: " + Integer.toString(processType) + ", " +
+                "postedAt: " + calendarToString(postedAt) + ", " +
                 "balance: " + Integer.toString(balance);
+    }
+
+    private String calendarToString(Calendar calendar) {
+        return calendar.get(Calendar.YEAR) + "/" +
+                calendar.get(Calendar.MONTH) + "/" +
+                calendar.get(Calendar.DAY_OF_MONTH);
     }
 }
