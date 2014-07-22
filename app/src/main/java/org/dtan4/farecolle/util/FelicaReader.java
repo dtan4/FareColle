@@ -46,21 +46,21 @@ public class FelicaReader {
     private byte[] readWithoutEncryption(byte[] idm, int size) throws IOException {
         ByteArrayOutputStream bout = new ByteArrayOutputStream(100);
 
-        bout.write(0);           // データ長バイトのダミー
-        bout.write(0x06);        // Felicaコマンド「Read Without Encryption」
-        bout.write(idm);         // カードID 8byte
-        bout.write(1);           // サービスコードリストの長さ(以下２バイトがこの数分繰り返す)
-        bout.write(0x0f);        // 履歴のサービスコード下位バイト
-        bout.write(0x09);        // 履歴のサービスコード上位バイト
-        bout.write(size);        // ブロック数
+        bout.write(0);           // dummy
+        bout.write(0x06);        // Felica command "Read Without Encryption"
+        bout.write(idm);         // card ID (8byte)
+        bout.write(1);           // length of service code list
+        bout.write(0x0f);        // lower bytes of history service code
+        bout.write(0x09);        // upper bytes of history service code
+        bout.write(size);        // number of blocks
 
         for (int i = 0; i < size; i++) {
-            bout.write(0x80);    // ブロックエレメント上位バイト 「Felicaユーザマニュアル抜粋」の4.3項参照
-            bout.write(i);       // ブロック番号
+            bout.write(0x80);    // upper bytes of block element, see User Manual 4.3
+            bout.write(i);       // block number
         }
 
         byte[] msg = bout.toByteArray();
-        msg[0] = (byte) msg.length; // 先頭１バイトはデータ長
+        msg[0] = (byte) msg.length;
 
         return msg;
     }
