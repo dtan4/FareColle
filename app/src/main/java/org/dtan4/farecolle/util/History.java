@@ -32,16 +32,29 @@ public class History {
         readFromBytes(historyBytes, offset);
     }
 
-    // each byte follows big-endian (except balance [10, 11])
     private void readFromBytes(byte[] historyBytes, int offset) {
+        // big-endian
         this.deviceType = historyBytes[offset + 0] & 0xff;
         this.processType = historyBytes[offset + 1] & 0xff;
         this.postedAt = readPostedAt(historyBytes, offset);
 
         // little-endian
         this.balance = multipleBytesToInt(historyBytes, offset + 11, offset + 10);
+
+        // big-endian
         this.serialNumber = multipleBytesToInt(historyBytes, offset + 12, offset + 14);
         this.region = historyBytes[offset + 15];
+    }
+
+    private boolean isBus() {
+        return (processType == 13) || (processType == 15) ||
+                (processType == 31) || (processType == 35);
+    }
+
+    private boolean isShopping() {
+        return (processType == 70) || (processType == 73) ||
+                (processType == 74) || (processType == 75) ||
+                (processType == 198) || (processType == 203);
     }
 
     private Calendar readPostedAt(byte[] historyBytes, int offset) {
