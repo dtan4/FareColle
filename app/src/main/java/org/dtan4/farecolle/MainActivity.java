@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.nfc.tech.NfcF;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,9 @@ import android.view.ViewGroup;
 import android.os.Build;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 
 public class MainActivity extends Activity {
@@ -64,11 +68,38 @@ public class MainActivity extends Activity {
         if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
                 || NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
                 || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
-            byte[] idm = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
+            Tag tag = (Tag)intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+
+            if (tag == null) {
+                Log.d(TAG, getString(R.string.nfc_null_tag));
+                Toast.makeText(getApplicationContext(), getString(R.string.nfc_null_tag),
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            byte[] idm = tag.getId();
             String idStr = toHex(idm);
 
             TextView tv = (TextView)findViewById(R.id.cardIdView);
             tv.setText(idStr);
+
+            NfcF nfc = NfcF.get(tag);
+
+            try {
+                nfc.connect();
+
+                try {
+                    byte[] req = readWithoutEncryption(idm, 10);
+                    Log.d(TAG, "req: " + toHex(req));
+                    byte[] res = nfc.transceive(req);
+                    Log.d(TAG, "res: " + toHex(res));
+                } finally {
+                    nfc.close();
+                }
+            } catch (Exception e) {
+                Log.d(TAG, e.getMessage());
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -108,6 +139,28 @@ public class MainActivity extends Activity {
         PendingIntent pendingIntent = PendingIntent.getActivity(
                 getApplicationContext(), 0, intent, 0);
         nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
+    }
+
+    private byte[] readWithoutEncryption(byte[] idm, int size) throws IOException {
+        ByteArrayOutputStream bout = new ByteArrayOutputStream(100);
+
+        bout.write(0);           // データ長バイトのダミー
+        bout.write(0x06);        // Felicaコマンド「Read Without Encryption」
+        bout.write(idm);         // カードID 8byte
+        bout.write(1);           // サービスコードリストの長さ(以下２バイトがこの数分繰り返す)
+        bout.write(0x0f);        // 履歴のサービスコード下位バイト
+        bout.write(0x09);        // 履歴のサービスコード上位バイト
+        bout.write(size);        // ブロック数
+
+        for (int i = 0; i < size; i++) {
+            bout.write(0x80);    // ブロックエレメント上位バイト 「Felicaユーザマニュアル抜粋」の4.3項参照
+            bout.write(i);       // ブロック番号
+        }
+
+        byte[] msg = bout.toByteArray();
+        msg[0] = (byte) msg.length; // 先頭１バイトはデータ長
+
+        return msg;
     }
 
     private String toHex(byte[] bytes) {

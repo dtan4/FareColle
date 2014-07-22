@@ -7,4 +7,5 @@
     <string name="nfc_enabled">NFC is enabled.</string>
     <string name="nfc_disabled">NFC is disabled!</string>
     <string name="nfc_unsupported">NFC is not supported on this device!</string>
+    <string name="nfc_null_tag">Invalid NFC tag is found!</string>
 </resources>
