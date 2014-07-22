@@ -12,6 +12,7 @@ public class History {
     private int processType;
     private Calendar postedAt;
     private int balance;
+    private int serialNumber;
     private int region;
 
     public static ArrayList<History> getHistoryList(byte[] historyBytes) {
@@ -39,7 +40,7 @@ public class History {
 
         // little-endian
         this.balance = multipleBytesToInt(historyBytes, offset + 11, offset + 10);
-
+        this.serialNumber = multipleBytesToInt(historyBytes, offset + 12, offset + 14);
         this.region = historyBytes[offset + 15];
     }
 
@@ -76,7 +77,8 @@ public class History {
     }
 
     public String toString() {
-        return "deviceType: " + Integer.toString(deviceType) + ", " +
+        return Integer.toString(serialNumber) + ", " +
+                "deviceType: " + Integer.toString(deviceType) + ", " +
                 "processType: " + Integer.toString(processType) + ", " +
                 "postedAt: " + calendarToString(postedAt) + ", " +
                 "balance: " + Integer.toString(balance);
