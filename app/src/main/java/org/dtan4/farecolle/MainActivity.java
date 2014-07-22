@@ -20,9 +20,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.dtan4.farecolle.util.FelicaReader;
+import org.dtan4.farecolle.util.History;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class MainActivity extends Activity {
@@ -64,6 +66,9 @@ public class MainActivity extends Activity {
 
     @Override
     public void onNewIntent(Intent intent) {
+        ArrayList<History> historyList = new ArrayList<History>();
+        StringBuilder sb = new StringBuilder();
+
         super.onNewIntent(intent);
         String action = intent.getAction();
 
@@ -83,7 +88,14 @@ public class MainActivity extends Activity {
             TextView tv = (TextView)findViewById(R.id.cardIdView);
             tv.setText(reader.felicaIDStr());
 
-            reader.getHistory();
+            historyList = reader.getHistory();
+
+            for (History history : historyList) {
+                sb.append(history.toString());
+                sb.append("\n");
+            }
+
+            tv.setText(sb.toString());
         }
     }
 

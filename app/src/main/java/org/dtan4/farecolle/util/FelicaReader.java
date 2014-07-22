@@ -5,6 +5,8 @@ import android.nfc.tech.NfcF;
 import android.util.Log;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class FelicaReader {
     private static final String TAG = "farecolle.util.FelicaReader";
@@ -20,19 +22,25 @@ public class FelicaReader {
         return toHex(felicaIDm);
     }
 
-    public void getHistory() {
+    public ArrayList<History> getHistory() {
+        ArrayList<History> historyList = null;
+
         try {
             nfc.connect();
 
             try {
                 byte[] request = readWithoutEncryption(felicaIDm, 10);
                 byte[] response = nfc.transceive(request);
+
+                historyList = History.getHistoryList(response);
             } finally {
                 nfc.close();
             }
         } catch (Exception e) {
             Log.d(TAG, e.getMessage());
         }
+
+        return historyList;
     }
 
     private byte[] readWithoutEncryption(byte[] idm, int size) throws IOException {
