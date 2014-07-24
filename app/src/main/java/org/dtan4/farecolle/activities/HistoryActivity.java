@@ -1,4 +1,4 @@
-package org.dtan4.farecolle;
+package org.dtan4.farecolle.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import org.dtan4.farecolle.HistoryAdapter;
+import org.dtan4.farecolle.HistoryDBOpenHelper;
 import org.dtan4.farecolle.R;
 import org.dtan4.farecolle.util.History;
 

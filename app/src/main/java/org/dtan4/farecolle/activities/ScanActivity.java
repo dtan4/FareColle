@@ -1,4 +1,4 @@
-package org.dtan4.farecolle;
+package org.dtan4.farecolle.activities;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -12,7 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import org.dtan4.farecolle.HistoryDBOpenHelper;
 import org.dtan4.farecolle.R;
+import org.dtan4.farecolle.activities.HistoryActivity;
 import org.dtan4.farecolle.util.FelicaReader;
 import org.dtan4.farecolle.util.History;
 

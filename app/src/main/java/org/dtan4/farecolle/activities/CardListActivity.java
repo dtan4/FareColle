@@ -1,4 +1,4 @@
-package org.dtan4.farecolle;
+package org.dtan4.farecolle.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,10 +12,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import org.dtan4.farecolle.HistoryDBOpenHelper;
 import org.dtan4.farecolle.R;
 import org.dtan4.farecolle.util.History;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CardListActivity extends Activity {
