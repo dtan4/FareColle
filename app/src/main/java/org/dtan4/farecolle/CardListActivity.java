@@ -1,10 +1,13 @@
 package org.dtan4.farecolle;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -37,6 +40,17 @@ public class CardListActivity extends Activity {
         ListAdapter adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, cardList);
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                ListView listView = (ListView)adapterView;
+                String selectedId = (String)listView.getItemAtPosition(position);
+                Intent intent = new Intent(getApplicationContext(), HistoryActivity.class);
+                intent.putExtra("felica_id", selectedId);
+                startActivity(intent);
+            }
+        });
     }
 
 
