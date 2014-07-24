@@ -47,6 +47,10 @@
             android:name=".ScanActivity"
             android:label="@string/title_activity_scan" >
         </activity>
+        <activity
+            android:name=".CardListActivity"
+            android:label="@string/title_activity_card_list" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.NFC" />
