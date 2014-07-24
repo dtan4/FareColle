@@ -1,6 +1,7 @@
 package org.dtan4.farecolle;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,18 @@ public class HistoryAdapter extends ArrayAdapter<History> {
 
         TextView typeView = (TextView)rowView.findViewById(R.id.type_view);
         typeView.setText(processType);
+
+        TextView diffView = (TextView)rowView.findViewById(R.id.diff_view);
+        int diff = history.getDiff();
+
+        if (diff > 0) {
+            diffView.setTextColor(Color.RED);
+            diffView.setText("+" + Integer.toString(history.getDiff()));
+        } else {
+            diffView.setTextColor(Color.BLUE);
+            diffView.setText(Integer.toString(history.getDiff()));
+        }
+
 
         TextView balanceView = (TextView)rowView.findViewById(R.id.balance_view);
         balanceView.setText(Integer.toString(history.getBalance()));

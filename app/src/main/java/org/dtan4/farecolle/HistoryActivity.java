@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListAdapter;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import org.dtan4.farecolle.R;
 import org.dtan4.farecolle.util.History;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class HistoryActivity extends Activity {
@@ -25,6 +27,7 @@ public class HistoryActivity extends Activity {
         Intent receivedIntent = getIntent();
         String felicaId = receivedIntent.getStringExtra("felica_id");
         ArrayList<History> historyList;
+        ArrayList<Integer> diffList;
 
         HistoryDBOpenHelper helper = new HistoryDBOpenHelper(this);
         SQLiteDatabase db = helper.getReadableDatabase();
@@ -34,6 +37,8 @@ public class HistoryActivity extends Activity {
         } finally {
             db.close();
         }
+
+        calculateDifferenceOfBalance(historyList);
 
         setTitle("History: " + felicaId);
         ListView listView = (ListView)findViewById(R.id.history_list_view);
@@ -58,5 +63,21 @@ public class HistoryActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void calculateDifferenceOfBalance(ArrayList<History> historyList) {
+        History currentHistory, nextHistory;
+        currentHistory = historyList.get(0);
+        int diff;
+
+        for (int i = 1; i < historyList.size(); i++) {
+            nextHistory = historyList.get(i);
+            diff = currentHistory.getBalance() - nextHistory.getBalance();
+            currentHistory.setDiff(diff);
+            Log.d(TAG, Integer.toString(diff));
+            currentHistory = nextHistory;
+        }
+
+        currentHistory.setDiff(currentHistory.getBalance());
     }
 }

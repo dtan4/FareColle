@@ -27,6 +27,8 @@ public class History implements Parcelable {
     private int serialNumber;
     private int region;
 
+    private int diff;
+
     public static final String _ID = "_id";
     public static final String FELICA_ID = "felica_id";
     public static final String DEVICE_TYPE = "device_type";
@@ -152,6 +154,14 @@ public class History implements Parcelable {
 
     public int getSerialNumber() {
         return serialNumber;
+    }
+
+    public int getDiff() {
+        return diff;
+    }
+
+    public void setDiff(int diff) {
+        this.diff = diff;
     }
 
     private void readFromCursor(Cursor cursor) {
