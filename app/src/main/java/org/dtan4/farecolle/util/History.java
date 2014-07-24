@@ -11,6 +11,7 @@ import android.util.Log;
 
 import org.dtan4.farecolle.HistoryDBOpenHelper;
 
+import java.sql.SQLClientInfoException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -94,6 +95,30 @@ public class History implements Parcelable {
         }
 
         return history;
+    }
+
+    public static ArrayList<String> getCardList(SQLiteDatabase db) {
+        ArrayList<String> cardList = new ArrayList<String>();
+        Cursor cursor = null;
+
+        try {
+            cursor = db.query(true, HistoryDBOpenHelper.HISTORY_TABLE_NAME,
+                    new String[]{ History.FELICA_ID }, null, null, null, null, null, null);
+
+            if (cursor != null && cursor.getCount() > 0) {
+                while (cursor.moveToNext()) {
+                    String felicaId =
+                            cursor.getString(cursor.getColumnIndex(History.FELICA_ID));
+                    cardList.add(felicaId);
+                }
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return cardList;
     }
 
     public History(String felicaId, Cursor cursor) {

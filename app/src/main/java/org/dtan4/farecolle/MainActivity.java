@@ -55,6 +55,11 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void startCardListActivity(View view) {
+        Intent intent = new Intent(this, CardListActivity.class);
+        startActivity(intent);
+    }
+
     public void startScanActivity(View view) {
         Intent intent = new Intent(this, ScanActivity.class);
         startActivity(intent);
