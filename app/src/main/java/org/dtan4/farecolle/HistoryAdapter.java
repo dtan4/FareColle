@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 import org.dtan4.farecolle.util.History;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class HistoryAdapter extends ArrayAdapter<History> {
     private final Context context;
@@ -28,6 +30,11 @@ public class HistoryAdapter extends ArrayAdapter<History> {
         View rowView = layoutInflater.inflate(R.layout.row_history, parent, false);
 
         History history = historyList.get(position);
+
+        Calendar postedAt = history.getPostedAt();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        TextView postedView = (TextView)rowView.findViewById(R.id.posted_view);
+        postedView.setText(sdf.format(postedAt.getTime()));
 
         TextView balanceView = (TextView)rowView.findViewById(R.id.balance_view);
         balanceView.setText(Integer.toString(history.getBalance()));

@@ -38,6 +38,10 @@ public class History implements Parcelable {
         return balance;
     }
 
+    public Calendar getPostedAt() {
+        return postedAt;
+    }
+
     private void readFromBytes(byte[] historyBytes, int offset) {
         // big-endian
         this.deviceType = historyBytes[offset + 0] & 0xff;
