@@ -1,13 +1,12 @@
 package org.dtan4.farecolle;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.nfc.tech.NfcF;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,15 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.dtan4.farecolle.util.FelicaReader;
 import org.dtan4.farecolle.util.History;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -85,11 +80,34 @@ public class MainActivity extends Activity {
             }
 
             FelicaReader reader = new FelicaReader(tag);
+            String felicaId = reader.felicaId();
             historyList = reader.getHistory();
 
+            HistoryDBOpenHelper helper = new HistoryDBOpenHelper(this);
+            SQLiteDatabase db = helper.getWritableDatabase();
+
+            try {
+                History latestHistory = History.getLatestHistory(db, felicaId);
+                int latestSerialNumber;
+
+                if (latestHistory != null) {
+                    latestSerialNumber = latestHistory.getSerialNumber();
+                } else {
+                    latestSerialNumber = -1;
+                }
+
+                for (History history : historyList) {
+                    if ((latestSerialNumber < 0) ||
+                            (latestSerialNumber < history.getSerialNumber())) {
+                        history.save(db);
+                    }
+                }
+            } finally {
+                db.close();
+            }
+
             Intent intentForHistory = new Intent(this, HistoryActivity.class);
-            intentForHistory.putExtra("felica_id", reader.felicaIDStr());
-            intentForHistory.putParcelableArrayListExtra("history_list", historyList);
+            intentForHistory.putExtra("felica_id", felicaId);
             startActivity(intentForHistory);
         }
     }
