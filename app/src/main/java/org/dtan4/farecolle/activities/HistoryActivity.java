@@ -15,7 +15,6 @@ import org.dtan4.farecolle.HistoryDBOpenHelper;
 import org.dtan4.farecolle.R;
 import org.dtan4.farecolle.util.History;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class HistoryActivity extends Activity {
@@ -29,7 +28,6 @@ public class HistoryActivity extends Activity {
         Intent receivedIntent = getIntent();
         String felicaId = receivedIntent.getStringExtra("felica_id");
         ArrayList<History> historyList;
-        ArrayList<Integer> diffList;
 
         HistoryDBOpenHelper helper = new HistoryDBOpenHelper(this);
         SQLiteDatabase db = helper.getReadableDatabase();

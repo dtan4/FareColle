@@ -1,20 +1,16 @@
 package org.dtan4.farecolle.util;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.ContactsContract;
 import android.util.Log;
 
 import org.dtan4.farecolle.HistoryDBOpenHelper;
 
-import java.sql.SQLClientInfoException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class History implements Parcelable {
     private static final String TAG = "History";

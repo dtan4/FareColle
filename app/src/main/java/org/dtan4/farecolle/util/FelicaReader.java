@@ -3,9 +3,9 @@ package org.dtan4.farecolle.util;
 import android.nfc.Tag;
 import android.nfc.tech.NfcF;
 import android.util.Log;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class FelicaReader {

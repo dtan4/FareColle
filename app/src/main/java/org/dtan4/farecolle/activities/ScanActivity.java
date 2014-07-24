@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import org.dtan4.farecolle.HistoryDBOpenHelper;
 import org.dtan4.farecolle.R;
-import org.dtan4.farecolle.activities.HistoryActivity;
 import org.dtan4.farecolle.util.FelicaReader;
 import org.dtan4.farecolle.util.History;
 
