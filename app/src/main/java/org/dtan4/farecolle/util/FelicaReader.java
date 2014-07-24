@@ -18,7 +18,7 @@ public class FelicaReader {
         felicaIDm = tag.getId();
     }
 
-    public String felicaIDStr() {
+    public String felicaId() {
         return toHex(felicaIDm);
     }
 
@@ -32,7 +32,7 @@ public class FelicaReader {
                 byte[] request = readWithoutEncryption(felicaIDm, 10);
                 byte[] response = nfc.transceive(request);
 
-                historyList = History.getHistoryList(response);
+                historyList = History.getHistoryList(felicaId(), response);
             } finally {
                 nfc.close();
             }
