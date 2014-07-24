@@ -85,17 +85,11 @@ public class MainActivity extends Activity {
             }
 
             FelicaReader reader = new FelicaReader(tag);
-            TextView tv = (TextView)findViewById(R.id.cardIdView);
-            tv.setText(reader.felicaIDStr());
-
             historyList = reader.getHistory();
 
-            for (History history : historyList) {
-                sb.append(history.toString());
-                sb.append("\n");
-            }
-
-            tv.setText(sb.toString());
+            Intent intentForHistory = new Intent(this, HistoryActivity.class);
+            intentForHistory.putParcelableArrayListExtra("history_list", historyList);
+            startActivity(intentForHistory);
         }
     }
 

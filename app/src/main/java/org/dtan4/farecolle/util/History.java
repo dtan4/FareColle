@@ -34,6 +34,10 @@ public class History implements Parcelable {
         readFromBytes(historyBytes, offset);
     }
 
+    public int getBalance() {
+        return balance;
+    }
+
     private void readFromBytes(byte[] historyBytes, int offset) {
         // big-endian
         this.deviceType = historyBytes[offset + 0] & 0xff;

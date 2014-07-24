@@ -3,9 +3,11 @@
 
     <string name="app_name">FareColle</string>
     <string name="action_settings">Settings</string>
-
     <string name="nfc_enabled">NFC is enabled.</string>
     <string name="nfc_disabled">NFC is disabled!</string>
     <string name="nfc_unsupported">NFC is not supported on this device!</string>
     <string name="nfc_null_tag">Invalid NFC tag is found!</string>
+    <string name="title_activity_history">HistoryActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>
