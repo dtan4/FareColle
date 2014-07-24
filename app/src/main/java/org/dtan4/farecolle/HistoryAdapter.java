@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.dtan4.farecolle.util.History;
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,6 +36,19 @@ public class HistoryAdapter extends ArrayAdapter<History> {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
         TextView postedView = (TextView)rowView.findViewById(R.id.posted_view);
         postedView.setText(sdf.format(postedAt.getTime()));
+
+        String processType;
+
+        if (history.isBus()) {
+            processType = "Bus";
+        } else if (history.isShopping()) {
+            processType = "Shopping";
+        } else {
+            processType = "Train";
+        }
+
+        TextView typeView = (TextView)rowView.findViewById(R.id.type_view);
+        typeView.setText(processType);
 
         TextView balanceView = (TextView)rowView.findViewById(R.id.balance_view);
         balanceView.setText(Integer.toString(history.getBalance()));

@@ -56,12 +56,12 @@ public class History implements Parcelable {
         this.region = historyBytes[offset + 15];
     }
 
-    private boolean isBus() {
+    public boolean isBus() {
         return (processType == 13) || (processType == 15) ||
                 (processType == 31) || (processType == 35);
     }
 
-    private boolean isShopping() {
+    public boolean isShopping() {
         return (processType == 70) || (processType == 73) ||
                 (processType == 74) || (processType == 75) ||
                 (processType == 198) || (processType == 203);

@@ -15,6 +15,18 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="20sp"
+            android:textStyle="bold"
+            android:text="postedAt"
+            />
+
+        <TextView
+            android:id="@+id/type_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:gravity="bottom"
+            android:text="type"
             />
 
         </LinearLayout>
@@ -25,6 +37,7 @@
         android:layout_height="wrap_content"
         android:textSize="60sp"
         android:gravity="right"
+        android:text="1090"
         />
     <TextView
         android:layout_width="wrap_content"
