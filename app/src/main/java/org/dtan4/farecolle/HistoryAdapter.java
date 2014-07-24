@@ -30,7 +30,7 @@ public class HistoryAdapter extends ArrayAdapter<History> {
         History history = historyList.get(position);
 
         TextView balanceView = (TextView)rowView.findViewById(R.id.balance_view);
-        balanceView.setText(Integer.toString(history.getBalance()) + " yen");
+        balanceView.setText(Integer.toString(history.getBalance()));
 
         return rowView;
     }
