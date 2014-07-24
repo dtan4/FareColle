@@ -50,6 +50,9 @@ public class HistoryAdapter extends ArrayAdapter<History> {
         TextView typeView = (TextView)rowView.findViewById(R.id.type_view);
         typeView.setText(processType);
 
+        TextView diffView = (TextView)rowView.findViewById(R.id.diff_view);
+        diffView.setText(Integer.toString(history.getDiff()));
+
         TextView balanceView = (TextView)rowView.findViewById(R.id.balance_view);
         balanceView.setText(Integer.toString(history.getBalance()));
 
