@@ -75,27 +75,29 @@ public class ScanActivity extends Activity {
             String felicaId = reader.felicaId();
             historyList = reader.getHistory();
 
-            HistoryDBOpenHelper helper = new HistoryDBOpenHelper(this);
-            SQLiteDatabase db = helper.getWritableDatabase();
+            if (historyList != null) {
+                HistoryDBOpenHelper helper = new HistoryDBOpenHelper(this);
+                SQLiteDatabase db = helper.getWritableDatabase();
 
-            try {
-                History latestHistory = History.getLatestHistory(db, felicaId);
-                int latestSerialNumber;
+                try {
+                    History latestHistory = History.getLatestHistory(db, felicaId);
+                    int latestSerialNumber;
 
-                if (latestHistory != null) {
-                    latestSerialNumber = latestHistory.getSerialNumber();
-                } else {
-                    latestSerialNumber = -1;
-                }
-
-                for (History history : historyList) {
-                    if ((latestSerialNumber < 0) ||
-                            (latestSerialNumber < history.getSerialNumber())) {
-                        history.save(db);
+                    if (latestHistory != null) {
+                        latestSerialNumber = latestHistory.getSerialNumber();
+                    } else {
+                        latestSerialNumber = -1;
                     }
+
+                    for (History history : historyList) {
+                        if ((latestSerialNumber < 0) ||
+                                (latestSerialNumber < history.getSerialNumber())) {
+                            history.save(db);
+                        }
+                    }
+                } finally {
+                    db.close();
                 }
-            } finally {
-                db.close();
             }
 
             Intent intentForHistory = new Intent(this, HistoryActivity.class);
