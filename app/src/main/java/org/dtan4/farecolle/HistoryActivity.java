@@ -1,6 +1,7 @@
 package org.dtan4.farecolle;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,15 +14,18 @@ import org.dtan4.farecolle.util.History;
 import java.util.ArrayList;
 
 public class HistoryActivity extends Activity {
-    private ArrayList<History> historyList;
+    private static final String TAG = "farecolle.HistoryActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        historyList = getIntent().getParcelableArrayListExtra("history_list");
+        Intent receivedIntent = getIntent();
+        String felicaId = receivedIntent.getStringExtra("felica_id");
+        ArrayList<History> historyList = receivedIntent.getParcelableArrayListExtra("history_list");
 
+        setTitle("History: " + felicaId);
         ListView listView = (ListView)findViewById(R.id.history_list_view);
         ListAdapter adapter = new HistoryAdapter(this, historyList);
         listView.setAdapter(adapter);

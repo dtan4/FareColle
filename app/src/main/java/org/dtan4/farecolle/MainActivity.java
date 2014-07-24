@@ -88,6 +88,7 @@ public class MainActivity extends Activity {
             historyList = reader.getHistory();
 
             Intent intentForHistory = new Intent(this, HistoryActivity.class);
+            intentForHistory.putExtra("felica_id", reader.felicaIDStr());
             intentForHistory.putParcelableArrayListExtra("history_list", historyList);
             startActivity(intentForHistory);
         }
