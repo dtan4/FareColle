@@ -43,6 +43,10 @@
             android:name=".HistoryActivity"
             android:label="@string/title_activity_history" >
         </activity>
+        <activity
+            android:name=".ScanActivity"
+            android:label="@string/title_activity_scan" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.NFC" />
