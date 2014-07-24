@@ -2,6 +2,7 @@ package org.dtan4.farecolle;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +24,16 @@ public class HistoryActivity extends Activity {
 
         Intent receivedIntent = getIntent();
         String felicaId = receivedIntent.getStringExtra("felica_id");
-        ArrayList<History> historyList = receivedIntent.getParcelableArrayListExtra("history_list");
+        ArrayList<History> historyList;
+
+        HistoryDBOpenHelper helper = new HistoryDBOpenHelper(this);
+        SQLiteDatabase db = helper.getReadableDatabase();
+
+        try {
+            historyList = History.getAllByFelicaId(db, felicaId);
+        } finally {
+            db.close();
+        }
 
         setTitle("History: " + felicaId);
         ListView listView = (ListView)findViewById(R.id.history_list_view);

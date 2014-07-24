@@ -9,15 +9,16 @@ import org.dtan4.farecolle.util.History;
 
 public class HistoryDBOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = "HistoryDBOpenHelper";
-    public static final String HISTORY_TABLE_NAME = "fare";
+    public static final String HISTORY_TABLE_NAME = "history";
     private static final int HISTORY_TABLE_VERSION = 1;
-    private static final String HISTORY_TABLE_FIELDS = History.FELICA_ID + " TEXT, " +
-            History.DEVICE_TYPE + " INT, " +
-            History.PROCESS_TYPE + " INT, " +
-            History.POSTED_AT + " INT, " +
-            History.BALANCE + " INT, " +
-            History.SERIAL_NUMBER + " INT, " +
-            History.REGION + " INT";
+    private static final String HISTORY_TABLE_FIELDS = History._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+            History.FELICA_ID + " TEXT, " +
+            History.DEVICE_TYPE + " INTEGER, " +
+            History.PROCESS_TYPE + " INTEGER, " +
+            History.POSTED_AT + " INTEGER, " +
+            History.BALANCE + " INTEGER, " +
+            History.SERIAL_NUMBER + " INTEGER, " +
+            History.REGION + " INTEGER";
     private static final String HISTORY_TABLE_CREATE =
             "CREATE TABLE " + HISTORY_TABLE_NAME + " (" + HISTORY_TABLE_FIELDS + ");";
 
