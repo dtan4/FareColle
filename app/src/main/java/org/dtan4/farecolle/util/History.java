@@ -73,7 +73,7 @@ public class History implements Parcelable {
         Calendar c = Calendar.getInstance();
 
         dateInt = multipleBytesToInt(historyBytes, offset + 4, offset + 5);
-        year = (dateInt >> 9) & 0x7f + 2000; // Suica is available from 2001
+        year = ((dateInt >> 9) & 0x7f) + 2000; // Suica is available from 2001
         month = (dateInt >> 5) & 0x0f;
         day = dateInt & 0x1f;
         c.set(year, month - 1, day);
