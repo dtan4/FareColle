@@ -23,8 +23,7 @@ import java.util.ArrayList;
 
 
 public class MainActivity extends Activity {
-    private NfcAdapter nfcAdapter;
-    private static final String TAG = "farecolle.main";
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,81 +34,13 @@ public class MainActivity extends Activity {
                     .add(R.id.container, new PlaceholderFragment())
                     .commit();
         }
-
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-
-        if (nfcAdapter != null) {
-            if (!nfcAdapter.isEnabled()) {
-                Toast.makeText(getApplicationContext(), getString(R.string.nfc_disabled),
-                        Toast.LENGTH_SHORT).show();
-            } else {
-                Log.d(TAG, getString(R.string.nfc_enabled));
-            }
-        } else {
-            Toast.makeText(getApplicationContext(), getString(R.string.nfc_unsupported),
-                    Toast.LENGTH_SHORT).show();
-        }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
-    }
-
-    @Override
-    public void onNewIntent(Intent intent) {
-        ArrayList<History> historyList = new ArrayList<History>();
-        StringBuilder sb = new StringBuilder();
-
-        super.onNewIntent(intent);
-        String action = intent.getAction();
-
-        if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)
-                || NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
-                || NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
-            Tag tag = (Tag)intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-
-            if (tag == null) {
-                Log.d(TAG, getString(R.string.nfc_null_tag));
-                Toast.makeText(getApplicationContext(), getString(R.string.nfc_null_tag),
-                        Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            FelicaReader reader = new FelicaReader(tag);
-            String felicaId = reader.felicaId();
-            historyList = reader.getHistory();
-
-            HistoryDBOpenHelper helper = new HistoryDBOpenHelper(this);
-            SQLiteDatabase db = helper.getWritableDatabase();
-
-            try {
-                History latestHistory = History.getLatestHistory(db, felicaId);
-                int latestSerialNumber;
-
-                if (latestHistory != null) {
-                    latestSerialNumber = latestHistory.getSerialNumber();
-                } else {
-                    latestSerialNumber = -1;
-                }
-
-                for (History history : historyList) {
-                    if ((latestSerialNumber < 0) ||
-                            (latestSerialNumber < history.getSerialNumber())) {
-                        history.save(db);
-                    }
-                }
-            } finally {
-                db.close();
-            }
-
-            Intent intentForHistory = new Intent(this, HistoryActivity.class);
-            intentForHistory.putExtra("felica_id", felicaId);
-            startActivity(intentForHistory);
-        }
     }
 
     @Override
@@ -124,30 +55,9 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        if (nfcAdapter == null) {
-            return;
-        }
-
-        nfcAdapter.disableForegroundDispatch(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (nfcAdapter == null) {
-            return;
-        }
-
-        Intent intent = new Intent(this, this.getClass())
-                .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(
-                getApplicationContext(), 0, intent, 0);
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
+    public void startScanActivity(View view) {
+        Intent intent = new Intent(this, ScanActivity.class);
+        startActivity(intent);
     }
 
     /**
