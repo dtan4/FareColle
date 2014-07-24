@@ -43,7 +43,11 @@ public class History implements Parcelable {
 
         for (int i = 0; i < historyCount; i++) {
             History history = new History(felicaId, historyBytes, 13 + i * 16);
-            historyList.add(history);
+
+            // TODO: pursuit more smart way
+            if (history.getPostedAt() != null) {
+                historyList.add(history);
+            }
         }
 
         return historyList;
@@ -216,16 +220,21 @@ public class History implements Parcelable {
 
     private Calendar readPostedAt(byte[] historyBytes, int offset) {
         int dateInt;
-        int year, month, day;
-        Calendar c = Calendar.getInstance();
-
         dateInt = multipleBytesToInt(historyBytes, offset + 4, offset + 5);
-        year = ((dateInt >> 9) & 0x7f) + 2000; // Suica is available from 2001
-        month = (dateInt >> 5) & 0x0f;
-        day = dateInt & 0x1f;
-        c.set(year, month - 1, day);
 
-        return c;
+        if (dateInt > 0) {
+            int year, month, day;
+            Calendar c = Calendar.getInstance();
+
+            year = ((dateInt >> 9) & 0x7f) + 2000; // Suica is available from 2001
+            month = (dateInt >> 5) & 0x0f;
+            day = dateInt & 0x1f;
+            c.set(year, month - 1, day);
+
+            return c;
+        } else {
+            return null;
+        }
     }
 
     private int multipleBytesToInt(byte[] historyBytes, int from, int to) {
