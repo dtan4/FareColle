@@ -1,11 +1,13 @@
 package org.dtan4.farecolle.util;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class History {
+public class History implements Parcelable {
     private static final String TAG = "farecolle.util.History";
 
     private int deviceType;
@@ -101,5 +103,43 @@ public class History {
         return calendar.get(Calendar.YEAR) + "/" +
                 calendar.get(Calendar.MONTH) + "/" +
                 calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(deviceType);
+        parcel.writeInt(processType);
+        parcel.writeLong(postedAt.getTimeInMillis());
+        parcel.writeInt(balance);
+        parcel.writeInt(serialNumber);
+        parcel.writeInt(region);
+    }
+
+    public static final Creator<History> CREATOR
+            = new Creator<History>() {
+        public History createFromParcel(Parcel parcel) {
+            return new History(parcel);
+        }
+
+        public History[] newArray(int size) {
+            return new History[size];
+        }
+    };
+
+    private History(final Parcel parcel) {
+        deviceType = parcel.readInt();
+        processType = parcel.readInt();
+
+        postedAt = Calendar.getInstance();
+        postedAt.setTimeInMillis(parcel.readLong());
+
+        balance = parcel.readInt();
+        serialNumber = parcel.readInt();
+        region = parcel.readInt();
     }
 }
