@@ -13,6 +13,7 @@ import org.dtan4.farecolle.HistoryDBOpenHelper;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class History implements Parcelable {
     private static final String TAG = "History";
@@ -33,6 +34,7 @@ public class History implements Parcelable {
     public static final String BALANCE = "balance";
     public static final String SERIAL_NUMBER = "serial_number";
     public static final String REGION = "regione";
+    public static final String CREATED_AT = "created_at";
 
 
     public static ArrayList<History> getHistoryList(String felicaId, byte[] historyBytes) {

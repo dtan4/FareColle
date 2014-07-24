@@ -10,15 +10,16 @@ import org.dtan4.farecolle.util.History;
 public class HistoryDBOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = "HistoryDBOpenHelper";
     public static final String HISTORY_TABLE_NAME = "history";
-    private static final int HISTORY_TABLE_VERSION = 1;
-    private static final String HISTORY_TABLE_FIELDS = History._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+    private static final int HISTORY_TABLE_VERSION = 2;
+    private static final String HISTORY_TABLE_FIELDS = History._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             History.FELICA_ID + " TEXT, " +
             History.DEVICE_TYPE + " INTEGER, " +
             History.PROCESS_TYPE + " INTEGER, " +
             History.POSTED_AT + " INTEGER, " +
             History.BALANCE + " INTEGER, " +
             History.SERIAL_NUMBER + " INTEGER, " +
-            History.REGION + " INTEGER";
+            History.REGION + " INTEGER, " +
+            History.CREATED_AT + " DATETIME DEFAULT CURRENT_TIMESTAMP";
     private static final String HISTORY_TABLE_CREATE =
             "CREATE TABLE " + HISTORY_TABLE_NAME + " (" + HISTORY_TABLE_FIELDS + ");";
 
@@ -36,6 +37,7 @@ public class HistoryDBOpenHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d(TAG, "Upgrade table from " + Integer.toString(oldVersion) + " to " +
                 Integer.toString(newVersion));
-        db.execSQL("DROP TABLE IF EXISTS " + HISTORY_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + HISTORY_TABLE_NAME + ";");
+        onCreate(db);
     }
 }
