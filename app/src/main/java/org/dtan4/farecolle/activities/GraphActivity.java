@@ -16,6 +16,7 @@ import org.dtan4.farecolle.R;
 import org.dtan4.farecolle.util.History;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class GraphActivity extends Activity {
 
@@ -26,6 +27,7 @@ public class GraphActivity extends Activity {
 
         Intent receivedIntent = getIntent();
         ArrayList<History> historyList = receivedIntent.getParcelableArrayListExtra("history_list");
+        Collections.reverse(historyList); // to follow ASC
         ArrayList<Bar> points = new ArrayList<Bar>();
 
         for (History history : historyList) {
