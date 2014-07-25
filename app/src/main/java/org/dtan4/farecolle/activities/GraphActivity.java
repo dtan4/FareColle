@@ -26,6 +26,9 @@ public class GraphActivity extends Activity {
         setContentView(R.layout.activity_graph);
 
         Intent receivedIntent = getIntent();
+        String felicaId = receivedIntent.getStringExtra("felica_id");
+        setTitle("Graph: " + felicaId);
+
         ArrayList<History> historyList = receivedIntent.getParcelableArrayListExtra("history_list");
         Collections.reverse(historyList); // to follow ASC
         ArrayList<Bar> points = new ArrayList<Bar>();

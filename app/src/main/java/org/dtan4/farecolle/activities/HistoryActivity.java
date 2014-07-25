@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class HistoryActivity extends Activity {
     private static final String TAG = "farecolle.HistoryActivity";
     private ArrayList<History> historyList;
+    private String felicaId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class HistoryActivity extends Activity {
         setContentView(R.layout.activity_history);
 
         Intent receivedIntent = getIntent();
-        String felicaId = receivedIntent.getStringExtra("felica_id");
+        felicaId = receivedIntent.getStringExtra("felica_id");
         HistoryDBOpenHelper helper = new HistoryDBOpenHelper(this);
         SQLiteDatabase db = helper.getReadableDatabase();
 
@@ -67,6 +68,7 @@ public class HistoryActivity extends Activity {
 
     public void startGraphActivity(View view) {
         Intent intent = new Intent(this, GraphActivity.class);
+        intent.putExtra("felica_id", felicaId);
         intent.putParcelableArrayListExtra("history_list", historyList);
         startActivity(intent);
     }
