@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 
 public class HistoryActivity extends Activity {
     private static final String TAG = "farecolle.HistoryActivity";
+    private ArrayList<History> historyList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +29,6 @@ public class HistoryActivity extends Activity {
 
         Intent receivedIntent = getIntent();
         String felicaId = receivedIntent.getStringExtra("felica_id");
-        ArrayList<History> historyList;
-
         HistoryDBOpenHelper helper = new HistoryDBOpenHelper(this);
         SQLiteDatabase db = helper.getReadableDatabase();
 
@@ -63,6 +63,12 @@ public class HistoryActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void startGraphActivity(View view) {
+        Intent intent = new Intent(this, GraphActivity.class);
+        intent.putParcelableArrayListExtra("history_list", historyList);
+        startActivity(intent);
     }
 
     private void calculateDifferenceOfBalance(ArrayList<History> historyList) {

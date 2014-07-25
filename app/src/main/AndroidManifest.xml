@@ -51,6 +51,10 @@
             android:name=".activities.CardListActivity"
             android:label="@string/title_activity_card_list" >
         </activity>
+        <activity
+            android:name=".activities.GraphActivity"
+            android:label="@string/title_activity_graph" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.NFC" />
