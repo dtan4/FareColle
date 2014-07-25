@@ -16,5 +16,5 @@
     <string name="list_button_label">List</string>
     <string name="title_activity_card_list">CardListActivity</string>
     <string name="title_activity_graph">GraphActivity</string>
-
+    <string name="graph_button_label">Show Graph</string>
 </resources>
