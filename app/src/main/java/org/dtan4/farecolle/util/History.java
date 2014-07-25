@@ -32,7 +32,7 @@ public class History implements Parcelable {
     public static final String POSTED_AT = "posted_at";
     public static final String BALANCE = "balance";
     public static final String SERIAL_NUMBER = "serial_number";
-    public static final String REGION = "regione";
+    public static final String REGION = "region";
     public static final String CREATED_AT = "created_at";
 
 
