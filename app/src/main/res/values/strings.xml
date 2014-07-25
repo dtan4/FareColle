@@ -7,14 +7,14 @@
     <string name="nfc_disabled">NFC is disabled!</string>
     <string name="nfc_unsupported">NFC is not supported on this device!</string>
     <string name="nfc_null_tag">Invalid NFC tag is found!</string>
-    <string name="title_activity_history">HistoryActivity</string>
+    <string name="title_activity_history">History</string>
     <string name="hello_world">Hello world!</string>
     <string name="yen">Yen</string>
-    <string name="title_activity_scan">ScanActivity</string>
+    <string name="title_activity_scan">Scan</string>
     <string name="scan_message">Scan your IC card</string>
     <string name="scan_button_label">Scan</string>
     <string name="list_button_label">List</string>
-    <string name="title_activity_card_list">CardListActivity</string>
-    <string name="title_activity_graph">GraphActivity</string>
+    <string name="title_activity_card_list">CardList</string>
+    <string name="title_activity_graph">Graph</string>
     <string name="graph_button_label">Show Graph</string>
 </resources>
